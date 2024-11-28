@@ -1,0 +1,514 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" style="height: 100%">
+<head>
+    <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800"
+    />
+    <style>
+        @font-face {
+          font-family: "Astagina Signature";
+          src: url("./fonts/astagina_signature/font.eot");
+          src: url("./fonts/astagina_signature/font.eot?#iefix")
+              format("embedded-opentype"),
+            url("./fonts/astagina_signature/font.woff2") format("woff2"),
+            url("./fonts/astagina_signature/font.woff") format("woff"),
+            url("./fonts/astagina_signature/font.ttf") format("truetype"),
+            url("./fonts/astagina_signature/font.svg#Astagina Signature")
+              format("svg");
+        }
+
+        @font-face {
+          font-family: "Open Sans";
+          font-style: normal;
+          font-weight: 400;
+          font-stretch: 100%;
+          src: url("./fonts/open_sans/font.ttf");
+          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+            U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+            U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+
+        @page {
+          size: A4;
+          padding-top: 50px;
+          margin-bottom: 0;
+          margin-right: 0;
+          margin-left: 0;
+          border-right: 60px solid white;
+          border-left: 60px solid white;
+          background-color: #eeeef1;
+          overflow: visible;
+
+          @top-center {
+            content: element(header);
+          }
+        }
+        #header {
+          position: running(header);
+          background-color: white;
+          width: 794px;
+          margin-left: 0px;
+          margin-right: 0px;
+          padding-right: 64px;
+          padding-left: 64px;
+          padding-top: 40px;
+          padding-bottom: 20px;
+          display: flex;
+          justify-content: center;
+          border-bottom: 1px solid #e1e3e6;
+        }
+    </style>
+</head>
+<section
+        id="header"
+        style="border: 0; box-sizing: border-box; font-family: Open Sans"
+>
+    <table style="width: 100%" cellspacing="0" cellpadding="0">
+        <tr>
+            <td style="border: 0; padding: 0" width="100%">
+                <img
+                        width="124"
+                        src="data:image/png;base64,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"
+                        alt=""
+                />
+            </td>
+            <td style="border: 0; padding: 0">
+                <h3
+                        style="
+              padding: 0;
+              margin: 0;
+              font-size: 16px;
+              font-weight: 600;
+              letter-spacing: 2px;
+              white-space: nowrap;
+              text-align: right;
+            "
+                >
+                    FORM F-100
+                </h3>
+                <p
+                        style="
+              padding: 0;
+              margin: 0;
+              font-size: 10px;
+              font-weight: 400;
+              letter-spacing: 1px;
+              white-space: nowrap;
+              text-align: right;
+            "
+                >
+                    Agent Consent Form
+                </p>
+            </td>
+        </tr>
+    </table>
+</section>
+<section
+        style="
+      width: 794px;
+      height: 2000px;
+      padding: 43px 60px;
+      padding-top: 0px;
+      box-sizing: border-box;
+      font-family: Open Sans;
+    "
+>
+    <div style="background-color: #eeeef1">
+        <div style="margin-bottom: 0px">
+            <div
+                    style="
+            padding: 9px 25px;
+            background: #2e4350;
+            color: white;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+          "
+            >
+                Personal Information
+            </div>
+            <div
+                    style="
+            padding: 9px 25px;
+            line-height: 16px;
+            padding-bottom: 13px;
+            padding-top: 4px;
+            background: #eeeef1;
+            font-size: 14px;
+          "
+            >
+                <table
+                        style="
+              width: 100%;
+              border: 0;
+              border-collapse: separate;
+              border-spacing: 0 8px;
+            "
+                        cellspacing="0"
+                        cellpadding="0"
+                >
+                    <tr>
+                        <td
+                                style="
+                  font-weight: 600;
+                  font-size: 14px;
+                  padding: 4px 0;
+                  white-space: nowrap;
+                  width: 15%;
+                  padding-bottom: 4px;
+                "
+                        >
+                            Nama
+                        </td>
+                        <td style="font-size: 14px; padding: 0 5px 0">:</td>
+                        <td
+                                style="
+                  font-size: 14px;
+                  font-weight: 400;
+                  width: 40%;
+                  border-bottom: 1px solid #e1e3e6;
+                  padding-bottom: 4px;
+                "
+                                th:text="${name}"
+                        ></td>
+                        <td style="width: 2%" />
+                        <td
+                                style="
+                  font-weight: 600;
+                  font-size: 14px;
+                  padding: 4px 0;
+                  white-space: nowrap;
+                  width: 5%;
+                  padding-bottom: 4px;
+                "
+                        >
+                            NIK
+                        </td>
+                        <td style="font-size: 14px; padding: 0 5px 0">:</td>
+                        <td
+                                style="
+                  font-size: 14px;
+                  font-weight: 400;
+                  width: 40%;
+                  border-bottom: 1px solid #e1e3e6;
+                  padding-bottom: 4px;
+                "
+                                th:text="${idNumber}"
+                        ></td>
+                        <td style="width: 2%" />
+                    </tr>
+                    <tr>
+                        <td
+                                style="
+                  font-weight: 600;
+                  font-size: 14px;
+                  padding: 4px 0;
+                  white-space: nowrap;
+                  width: 15%;
+                  padding-bottom: 4px;
+                "
+                        >
+                            Jenis Kelamin
+                        </td>
+                        <td style="font-size: 11px; padding: 0 5px 0">:</td>
+                        <td
+                                style="
+                  font-size: 14px;
+                  font-weight: 400;
+                  width: 40%;
+                  border-bottom: 1px solid #e1e3e6;
+                  padding-bottom: 4px;
+                "
+                                th:text="${gender}"
+                        ></td>
+                        <td style="width: 2%" />
+                        <td
+                                style="
+                  font-weight: 600;
+                  font-size: 14px;
+                  padding: 4px 0;
+                  white-space: nowrap;
+                  width: 5%;
+                  padding-bottom: 4px;
+                "
+                        >
+                            Email
+                        </td>
+                        <td style="font-size: 14px; padding: 0 5px 0">:</td>
+                        <td
+                                style="
+                  font-size: 14px;
+                  font-weight: 400;
+                  width: 40%;
+                  border-bottom: 1px solid #e1e3e6;
+                  padding-bottom: 4px;
+                "
+                                th:text="${email}"
+                        ></td>
+                        <td style="width: 2%" />
+                    </tr>
+                    <tr style="vertical-align: top">
+                        <td
+                                style="
+                  font-weight: 600;
+                  font-size: 14px;
+                  white-space: nowrap;
+                  width: 15%;
+                  padding-bottom: 5px;
+                "
+                        >
+                            Alamat
+                        </td>
+                        <td style="font-size: 14px; padding: 0 5px 0">:</td>
+                        <td
+                                style="
+                  font-size: 14px;
+                  font-weight: 400;
+                  width: 40%;
+                  border-bottom: 1px solid #e1e3e6;
+                  padding-bottom: 4px;
+                "
+                                th:text="${address}"
+                        ></td>
+                        <td style="width: 2%" />
+                        <td
+                                style="
+                  font-weight: 600;
+                  font-size: 14px;
+                  white-space: nowrap;
+                  width: 5%;
+                  padding-bottom: 5px;
+                "
+                        >
+                            NPWP
+                        </td>
+                        <td style="font-size: 14px; padding: 0 5px 0">:</td>
+                        <td style="width: 40%">
+                            <div
+                                    style="
+                    font-size: 14px;
+                    font-weight: 400;
+                    height: 18px;
+                    border-bottom: 1px solid #e1e3e6;
+                    padding-bottom: 4px;
+                  "
+                                    th:text="${npwp}"
+                            ></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div style="margin-bottom: 0px" id="consent-statement">
+            <div
+                    style="
+            padding: 9px 25px;
+            background: #2e4350;
+            color: white;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+          "
+            >
+                Consent Statement
+            </div>
+            <div
+                    style="
+            padding: 9px 25px;
+            line-height: 16px;
+            padding-bottom: 7px;
+            padding-top: 13px;
+            background: #eeeef1;
+            font-size: 14px;
+          "
+            >
+                <p style="padding: 0; margin: 0">
+                    Sehubungan dengan data/informasi serta dokumen-dokumen yang saya
+                    berikan tersebut di atas, maka dengan ini Saya menyatakan dengan
+                    sesungguhnya hal-hal sebagai berikut:
+                </p>
+                <ol
+                        style="
+              padding-inline-start: 12px;
+              padding-left: 18px;
+              margin-left: 0;
+              list-style: decimal;
+              line-height: 16px;
+            "
+                >
+                    <li style="margin-bottom: 10px">
+                        Identitas Saya sebagaimana tercantum di atas adalah benar nama dan
+                        tempat berdomisili Saya pada saat ini, sesuai identitas diri yang
+                        telah Saya serahkan kepada BFI. Dalam hal terdapat perubahan
+                        dan/atau perbedaan data (-data) antara yang tercantum dalam
+                        identitas diri Saya tersebut di atas dengan fakta yang sebenarnya
+                        terjadi, maka Saya akan memberitahukan hal tersebut secara
+                        tertulis kepada BFI.
+                    </li>
+                    <li style="margin-bottom: 10px">
+                        Saya bersedia menjadi agent untuk BFI dengan syarat-syarat dan
+                        ketentuan sebagaimana yang telah ditentukan oleh BFI. Dalam hal
+                        ini Saya bukan dan tidak termasuk serta tidak merupakan bagian
+                        dari karyawan BFI, sehingga Saya tidak berhak bertindak untuk dan
+                        atas nama serta mewakili kepentingan BFI, menggunakan fasilitas
+                        serta segala sesuatu yang berhubungan dengan BFI.
+                    </li>
+                    <li style="margin-bottom: 10px">
+                        Saya dengan ini berjanji untuk melaksanakan tugas dan fungsi Saya
+                        sebagai agent, yang termasuk namun tidak terbatas didalam
+                        memasarkan fasilitas pembiayaan milik BFI kepada (para) Debitur
+                        dengan cara menyerahkan aplikasi permohonan pembiayaan konsumen
+                        dalam bentuk Formulir Permohonan Pembiayaan (FPP) atas
+                        masing-masing Debitur yang bermaksud memperoleh fasilitas
+                        pembiayaan dengan jaminan mobil dan/atau motor kepada BFI.
+                    </li>
+                    <li style="margin-bottom: 10px">
+                        Saya memberikan persetujuan kepada PT BFI Finance Indonesia
+                        dan/atau Lembaga Pengelolaan Informasi Perkreditan (LPIP) yang
+                        ditunjuk untuk:
+                        <ol
+                                style="
+                  padding-inline-start: 12px;
+                  padding-left: 20px;
+                  list-style: lower-latin;
+                  line-height: 16px;
+                "
+                        >
+                            <li>
+                                Mendapatkan dan/atau Memberikan dokumen serta data Saya /
+                                Perusahaan dan/atau Pengurus Perusahaan yang diperlukan untuk
+                                mendukung pemeriksaan informasi perkreditan.
+                            </li>
+                            <li>
+                                Melakukan pemeriksaan, verifikasi, validasi dan pemrosesan
+                                data Saya / Perusahaan dan/atau Pengurus Perusahaan pada
+                                Sistem Layanan Informasi Keuangan (SLIK) baik yang dikelola
+                                oleh Otoritas Jasa Keuangan (OJK), Lembaga Pengelola Informasi
+                                Perkreditan (LPIP) dan/atau pihak ketiga yang ditunjuk oleh PT
+                                BFI Finance Indonesia.
+                            </li>
+                        </ol>
+                    </li>
+                    <li style="margin-bottom: 10px">
+                        Saya bersedia untuk mematuhi aturan BFI untuk tidak melakukan
+                        hal-hal sebagai berikut:
+                        <ol
+                                style="
+                  padding-inline-start: 12px;
+                  padding-left: 20px;
+                  list-style: lower-latin;
+                  line-height: 16px;
+                "
+                        >
+                            <li>
+                                Meminta dan/atau menerima uang pengurusan/komisi/hadiah atau
+                                dalam bentuk apapun dari Pemohon.
+                            </li>
+                            <li>
+                                Meminta dan/atau menerima angsuran dan/atau pembayaran dari
+                                Konsumen.
+                            </li>
+                            <li>
+                                Meminta dan/atau menerima asli dokumen/data (-data) dari
+                                Pemohon.
+                            </li>
+                            <li>
+                                Memberikan informasi yang menyesatkan kepada Pemohon,
+                                misalnya: &quot;bisa mempercepat proses pembiayaan&quot;,
+                                &quot;pasti disetujui&quot; dan lain-lain.
+                            </li>
+                            <li>
+                                Mengubah/memalsukan data (-data) Pemohon, atau
+                                membujuk/mengajarkan Pemohon supaya memalsukan data (-data)
+                                yang diberikan kepada BFI.
+                            </li>
+                            <li>Melakukan hal-hal lain yang dianggap merugikan BFI.</li>
+                            <li>
+                                Melakukan promosi dengan memakai nama BFI dan/atau logo
+                                dan/atau merek dagang yang merupakan milik BFI untuk semua
+                                bentuk media promosi seperti, iklan koran, web internet,
+                                poster, dll, selain media promosi resmi yang diizinkan BFI.
+                            </li>
+                            <li>
+                                Menerima titipan aplikasi/pengajuan konsumen dari seluruh
+                                karyawan internal PT BFI Finance Indonesia, Tbk dengan alasan
+                                apapun itu dan ketentuan lainnya yang telah diatur oleh BFI
+                                Finance.
+                            </li>
+                        </ol>
+                    </li>
+                    <li
+                            style="
+                page-break-before: always;
+                margin-bottom: 10px;
+                margin-top: 40px;
+              "
+                    >
+                        Untuk setiap FPP yang telah disetujui dan dibukukan serta telah
+                        dilakukan pencarian dana oleh BFI kepada (para) Debiturnya, maka
+                        Saya berhak untuk mendapatkan imbalan jasa dari BFI berdasarkan
+                        ketentuan BFI.
+                    </li>
+                    <li style="margin-bottom: 10px">
+                        Apabila hal-hal sebagaimana dimaksud di atas tidak benar, maka
+                        Saya bertanggung jawab sepenuhnya serta bersedia dituntut baik
+                        secara perdata maupun secara pidana oleh BFI. Dalam hal ini BFI
+                        berhak untuk mengakhiri hubungan kerjasama yang telah terjalin
+                        dengan Saya.
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div style="margin-bottom: 0px">
+            <div
+                    style="
+            padding: 9px 25px;
+            line-height: 16px;
+            padding-bottom: 7px;
+            padding-top: 13px;
+            background: #eeeef1;
+            font-size: 14px;
+          "
+            >
+                <p style="padding: 0; margin: 0; font-size: 14px; font-weight: 600">
+                    <span th:text="${dateString}"></span>
+                </p>
+                <p
+                        style="
+              padding: 0;
+              margin: 0;
+              font-size: 14px;
+              font-weight: 400;
+              margin-bottom: 10px;
+            "
+                >
+                    Tanda Tangan Digital
+                </p>
+                <table>
+                    <tr>
+                        <td>
+                            <div
+                                    style="
+                    padding: 9px 20px 3px;
+                    background: white;
+                    border-radius: 3px;
+                    font-size: 31px;
+                    font-family: Astagina Signature;
+                    line-height: 40px;
+                    min-width: 107px;
+                    min-height: 40px;
+                    text-align: center;
+                  "
+                                    th:text="${sign}"
+                            ></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+</html>
